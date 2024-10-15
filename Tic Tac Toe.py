@@ -5,13 +5,14 @@ class TicTacToe:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("Tic-Tac-Toe")
-        self.window.configure(bg="grey")  # Set background color to grey
+        self.window.configure(bg="grey")
 
         self.current_player = "X"
         self.board = [[" " for _ in range(3)] for _ in range(3)]
         self.buttons = [[None for _ in range(3)] for _ in range(3)]
 
         self.create_board()
+        self.toggle_fullscreen()  # Start in fullscreen mode
 
     def create_board(self):
         for i in range(3):
@@ -34,13 +35,21 @@ class TicTacToe:
         )
         reset_button.grid(row=3, column=1)
 
+        fullscreen_button = tk.Button(
+            self.window,
+            text="Fullscreen",
+            font=("Helvetica", 12),
+            command=self.toggle_fullscreen
+        )
+        fullscreen_button.grid(row=3, column=2)
+
     def on_button_click(self, row, col):
         if self.board[row][col] == " ":
             self.board[row][col] = self.current_player
             if self.current_player == "X":
-                self.buttons[row][col].config(text=self.current_player, fg="blue")  # Blue for X
+                self.buttons[row][col].config(text=self.current_player, fg="blue")
             else:
-                self.buttons[row][col].config(text=self.current_player, fg="red")  # Red for O
+                self.buttons[row][col].config(text=self.current_player, fg="red")
 
             if self.check_winner():
                 messagebox.showinfo("Tic-Tac-Toe", f"Player {self.current_player} wins!")
@@ -82,6 +91,10 @@ class TicTacToe:
         for i in range(3):
             for j in range(3):
                 self.buttons[i][j].config(text=" ")
+
+    def toggle_fullscreen(self):
+        current_state = self.window.attributes('-fullscreen')
+        self.window.attributes('-fullscreen', not current_state)
 
     def run(self):
         self.window.mainloop()
