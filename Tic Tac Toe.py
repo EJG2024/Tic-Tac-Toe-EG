@@ -12,7 +12,9 @@ class TicTacToe:
         self.buttons = [[None for _ in range(3)] for _ in range(3)]
 
         self.create_board()
-        self.toggle_fullscreen()  # Start in fullscreen mode
+
+        # Bind the fullscreen event to the toggle_fullscreen method
+        self.window.bind("<F11>", self.toggle_fullscreen) 
 
     def create_board(self):
         for i in range(3):
@@ -34,14 +36,6 @@ class TicTacToe:
             command=self.reset_game
         )
         reset_button.grid(row=3, column=1)
-
-        fullscreen_button = tk.Button(
-            self.window,
-            text="Fullscreen",
-            font=("Helvetica", 12),
-            command=self.toggle_fullscreen
-        )
-        fullscreen_button.grid(row=3, column=2)
 
     def on_button_click(self, row, col):
         if self.board[row][col] == " ":
@@ -92,7 +86,7 @@ class TicTacToe:
             for j in range(3):
                 self.buttons[i][j].config(text=" ")
 
-    def toggle_fullscreen(self):
+    def toggle_fullscreen(self, event=None):  # Make event optional
         current_state = self.window.attributes('-fullscreen')
         self.window.attributes('-fullscreen', not current_state)
 
